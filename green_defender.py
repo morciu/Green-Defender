@@ -53,11 +53,15 @@ class GreenDefender:
 			if laser.rect.left > self.saucer.screen_rect.right:
 				self.lasers.remove(laser)
 		# Check if any lasers have hit asteroids, and get rid of respective lasers and asteroids.
+		self._hit_asteroid()
+
+	def _hit_asteroid(self):
 		collisions = pygame.sprite.groupcollide(
 			self.lasers, self.asteroids, True, True)
 		if not self.asteroids:
 			self.lasers.empty()
 			self._create_group_asteroids()
+			self.settings.increase_speed()
 
 	def _update_asteroids(self):
 		for asteroid in self.asteroids.sprites():
@@ -126,6 +130,7 @@ class GreenDefender:
 		# Create new asteroi group and center saucer
 		self._create_group_asteroids()
 		self.saucer.center_saucer()
+		self.settings.initialize_dynamic_settings()
 
 	def _check_keydown_events(self, event):
 		if event.key == pygame.K_ESCAPE:
@@ -153,10 +158,10 @@ class GreenDefender:
 		available_space_y = self.settings.screen_height
 		number_asteroids_y = available_space_y // asteroid_height
 		# Determine available space and nr. of asteroids in one row
-		available_space_x = self.settings.screen_width
+		available_space_x = self.settings.screen_width * 2
 		number_collumns = available_space_x // (2 * asteroid_width) 
 		# Create full group of asteroids
-		for collumn_number in range(3, number_collumns):
+		for collumn_number in range(6, number_collumns):
 			for asteroid_number in range(number_asteroids_y):
 				self._create_asteroid(asteroid_number, collumn_number)
 
@@ -172,8 +177,9 @@ class GreenDefender:
 
 	def _fire_laser(self):
 		"""Create a new laser and add it to the laser group."""
-		new_laser = Laser(self)
-		self.lasers.add(new_laser)
+		if len(self.lasers) < self.settings.lasers_allowed:
+			new_laser = Laser(self)
+			self.lasers.add(new_laser)
 
 	def _update_screen(self):
 		# Fills screen with background color
