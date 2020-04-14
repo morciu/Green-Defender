@@ -5,6 +5,7 @@ import pygame
 from settings import Settings
 from game_stats import GameStats
 from button import Button
+from scoreboard import Scoreboard
 
 from saucer import Saucer
 from laser import Laser
@@ -17,7 +18,6 @@ class GreenDefender:
 	def __init__(self):
 		pygame.init()
 		self.settings = Settings()
-		self.stats = GameStats(self)
 
 		self.screen = pygame.display.set_mode(
 			(0, 0), pygame.FULLSCREEN)
@@ -34,6 +34,10 @@ class GreenDefender:
 		self.play_button = Button(self, "Play")
 
 		pygame.display.set_caption("Green Defender")
+
+		# Create an instance to store game stats and scoreboard
+		self.stats = GameStats(self)
+		self.score = Scoreboard(self)
 
 	def run_game(self):
 		"""Main loop."""
@@ -58,6 +62,11 @@ class GreenDefender:
 	def _hit_asteroid(self):
 		collisions = pygame.sprite.groupcollide(
 			self.lasers, self.asteroids, True, True)
+		if collisions:
+			for asteroids in collisions.values():
+				self.stats.score += self.settings.asteroid_points * len(asteroids)
+			self.score.prep_score()
+
 		if not self.asteroids:
 			self.lasers.empty()
 			self._create_group_asteroids()
@@ -124,6 +133,8 @@ class GreenDefender:
 		self.stats.reset_stats()
 		# Activate game
 		self.stats.game_active = True
+		# Prep new score
+		self.score.prep_score()
 		# Clear screen of remaining asteroids and lasers
 		self.asteroids.empty()
 		self.lasers.empty()
@@ -190,6 +201,9 @@ class GreenDefender:
 		for laser in self.lasers.sprites():
 			laser.draw_laser()
 		self.asteroids.draw(self.screen)
+
+		# Draw score info
+		self.score.show_score()
 
 		# Draw the play button on screen in game inactive
 		if not self.stats.game_active:

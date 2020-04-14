@@ -22,6 +22,9 @@ class Settings:
 		# Speed-up scale
 		self.speedup_scale = 1.1
 
+		# Score value increase scale
+		self.score_scale = 1.5
+
 		self.initialize_dynamic_settings()
 
 	def initialize_dynamic_settings(self):
@@ -32,11 +35,12 @@ class Settings:
 		self.laser_speed = 3.5
 		# Asteroid speed
 		self.asteroid_speed = 0.5
+		# Points earned for shooting asteroids
+		self.asteroid_points = 50
 
 	def increase_speed(self):
 		self.saucer_speed *= self.speedup_scale
 		self.laser_speed *= self.speedup_scale
 		self.asteroid_speed *= self.speedup_scale
 
-
-
+		self.asteroid_points = int(self.asteroid_points * self.score_scale)

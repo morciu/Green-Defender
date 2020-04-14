@@ -11,3 +11,4 @@ class GameStats:
 	def reset_stats(self):
 		"""Initialize stats that can change during the game."""
 		self.saucers_left = self.settings.saucer_limit
+		self.score = 0
