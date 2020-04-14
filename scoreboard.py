@@ -1,10 +1,14 @@
 import pygame.font
+from pygame.sprite import Group
+
+from saucer import Saucer
 
 class Scoreboard:
 	"""A class for the scoreboard."""
 
 	def __init__(self, gf_game):
 		"""Initialize scorekeeping attributes."""
+		self.gf_game = gf_game
 		self.screen = gf_game.screen
 		self.screen_rect = self.screen.get_rect()
 		self.settings = gf_game.settings
@@ -18,6 +22,19 @@ class Scoreboard:
 		self.prep_score()
 		self.prep_high_score()
 		self.prep_stage()
+		self.prep_saucers()
+
+	def prep_saucers(self):
+		"""Show how many flying saucers are left."""
+		self.saucers = Group()
+		for saucer_nr in range(self.stats.saucers_left):
+			saucer = Saucer(self.gf_game)
+			saucer.rect.width = int(saucer.rect.width / 4)
+			saucer.rect.height = int(saucer.rect.height / 4)
+			saucer.image = pygame.transform.scale(saucer.image, (saucer.rect.width, saucer.rect.height))
+			saucer.rect.left = 10 + (saucer_nr * saucer.rect.width)
+			saucer.rect.bottom = self.score_rect.top
+			self.saucers.add(saucer)
 
 	def prep_stage(self):
 		"""Turn stage info into a rendered image."""
@@ -55,10 +72,11 @@ class Scoreboard:
 		self.score_rect.bottom = self.screen_rect.bottom - 20
 
 	def show_score(self):
-		"""Draw score and stage nr to te screen."""
+		"""Draw score, stage nr and lives left to te screen."""
 		self.screen.blit(self.score_image, self.score_rect)
 		self.screen.blit(self.high_score_image, self.high_score_rect)
 		self.screen.blit(self.stage_image, self.stage_rect)
+		self.saucers.draw(self.screen)
 
 	def check_high_score(self):
 		"""Check if there is a new high score."""

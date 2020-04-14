@@ -1,8 +1,11 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Saucer:
+class Saucer(Sprite):
 	"""A class to manage flying saucer."""
 	def __init__(self, gf_game):
+		"""Initialize the flying saucer and its starting position."""
+		super().__init__()
 		self.screen = gf_game.screen
 		self.settings = gf_game.settings
 		self.screen_rect = gf_game.screen.get_rect()

@@ -87,8 +87,9 @@ class GreenDefender:
 	def _player_hit(self):
 		"""Respont to saucer-asteroid collision events."""
 		if self.stats.saucers_left > 0:
-			# Decrease available saucers.
+			# Decrease available saucers and update scoreboard.
 			self.stats.saucers_left -=1
+			self.score.prep_saucers()
 
 			# Free up the screen and repopulate it.
 			self.asteroids.empty()
