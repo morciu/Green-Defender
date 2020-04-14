@@ -72,6 +72,8 @@ class GreenDefender:
 			self.lasers.empty()
 			self._create_group_asteroids()
 			self.settings.increase_speed()
+			self.stats.stage += 1
+			self.score.prep_stage()
 
 	def _update_asteroids(self):
 		for asteroid in self.asteroids.sprites():
@@ -134,8 +136,9 @@ class GreenDefender:
 		self.stats.reset_stats()
 		# Activate game
 		self.stats.game_active = True
-		# Prep new score
+		# Prep new score and stage nr
 		self.score.prep_score()
+		self.score.prep_stage()
 		# Clear screen of remaining asteroids and lasers
 		self.asteroids.empty()
 		self.lasers.empty()

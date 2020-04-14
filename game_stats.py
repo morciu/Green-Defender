@@ -11,6 +11,9 @@ class GameStats:
 		# High score that should never be reset.
 		self.high_score = 0
 
+		# Stage number
+		self.stage = 1
+
 	def reset_stats(self):
 		"""Initialize stats that can change during the game."""
 		self.saucers_left = self.settings.saucer_limit

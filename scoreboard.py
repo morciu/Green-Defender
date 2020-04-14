@@ -17,6 +17,18 @@ class Scoreboard:
 		# Prepare score images
 		self.prep_score()
 		self.prep_high_score()
+		self.prep_stage()
+
+	def prep_stage(self):
+		"""Turn stage info into a rendered image."""
+		stage_str = str(self.stats.stage)
+		self.stage_image = self.font.render(stage_str, True, 
+			self.text_color, self.settings.bg_color)
+
+		# Place stage image bottom center of screen
+		self.stage_rect = self.stage_image.get_rect()
+		self.stage_rect.centerx = self.screen_rect.centerx
+		self.stage_rect.bottom = self.screen_rect.bottom
 
 	def prep_high_score(self):
 		"""Turn high score info into a rendered image."""
@@ -43,9 +55,10 @@ class Scoreboard:
 		self.score_rect.bottom = self.screen_rect.bottom - 20
 
 	def show_score(self):
-		"""Draw score to te screen."""
+		"""Draw score and stage nr to te screen."""
 		self.screen.blit(self.score_image, self.score_rect)
 		self.screen.blit(self.high_score_image, self.high_score_rect)
+		self.screen.blit(self.stage_image, self.stage_rect)
 
 	def check_high_score(self):
 		"""Check if there is a new high score."""
