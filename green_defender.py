@@ -66,6 +66,7 @@ class GreenDefender:
 			for asteroids in collisions.values():
 				self.stats.score += self.settings.asteroid_points * len(asteroids)
 			self.score.prep_score()
+			self.score.check_high_score()
 
 		if not self.asteroids:
 			self.lasers.empty()
