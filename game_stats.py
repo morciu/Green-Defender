@@ -9,12 +9,13 @@ class GameStats:
 		self.game_active = False
 
 		# High score that should never be reset.
-		self.high_score = 0
-
-		# Stage number
-		self.stage = 1
+		with open('high_score.txt') as high_score:
+			self.high_score = int(high_score.read())
 
 	def reset_stats(self):
 		"""Initialize stats that can change during the game."""
 		self.saucers_left = self.settings.saucer_limit
 		self.score = 0
+
+		# Stage number
+		self.stage = 1
