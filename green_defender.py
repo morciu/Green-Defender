@@ -53,6 +53,22 @@ class GreenDefender:
 				self._update_asteroids()
 			self._update_screen()
 
+	def play_death_sound(self):
+		death_sound = pygame.mixer.Sound('sounds/death_sound.wav')
+		pygame.mixer.Sound.play(death_sound)
+
+	def play_asteroid_destroyed(self):
+		asteroid_destroyed = pygame.mixer.Sound('sounds/destroy_asteroid.wav')
+		pygame.mixer.Sound.play(asteroid_destroyed)
+
+	def play_laser_sound(self):
+		laser_sound = pygame.mixer.Sound('sounds/fire_laser.wav')
+		pygame.mixer.Sound.play(laser_sound)
+
+	def play_gameover_sound(self):
+		gameover_sound = pygame.mixer.Sound('sounds/game_over.wav')
+		pygame.mixer.Sound.play(gameover_sound)
+
 	def _update_lasers(self):
 		"""Update position of the lasers."""
 		self.lasers.update()
@@ -69,6 +85,7 @@ class GreenDefender:
 		if collisions:
 			for asteroids in collisions.values():
 				self.stats.score += self.settings.asteroid_points * len(asteroids)
+				self.play_asteroid_destroyed()
 			self.score.prep_score()
 			self.score.check_high_score()
 
@@ -103,10 +120,12 @@ class GreenDefender:
 			self._create_group_asteroids()
 			self.saucer.center_saucer()
 		else:
+			self.play_gameover_sound()
 			self.stats.game_active = False
 			pygame.mouse.set_visible(True)
 
-		#Pause
+		#Pause and play death sound
+		self.play_death_sound()
 		sleep(1.0)
 
 	def _check_asteroid_left(self):
@@ -200,6 +219,7 @@ class GreenDefender:
 		if len(self.lasers) < self.settings.lasers_allowed:
 			new_laser = Laser(self)
 			self.lasers.add(new_laser)
+			self.play_laser_sound()
 
 	def _update_screen(self):
 		# Fills screen with background color
