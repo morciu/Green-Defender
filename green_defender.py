@@ -35,6 +35,10 @@ class GreenDefender:
 
 		pygame.display.set_caption("Green Defender")
 
+		# Load soundtrack and play it
+		pygame.mixer.music.load("sounds/green_defender.wav")
+		pygame.mixer.music.play(-1)
+
 		# Create an instance to store game stats and scoreboard
 		self.stats = GameStats(self)
 		self.score = Scoreboard(self)
