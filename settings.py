@@ -10,6 +10,9 @@ class Settings:
 		# Background color
 		self.bg_color = self.dark_blue
 
+		# Background speed
+		self.background_speed = 3
+
 		# Laser settings
 		self.laser_width = 17
 		self.laser_height = 3

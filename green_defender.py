@@ -7,6 +7,7 @@ from game_stats import GameStats
 from button import Button
 from scoreboard import Scoreboard
 
+from star import Star
 from saucer import Saucer
 from laser import Laser
 from asteroid import Asteroid
@@ -27,6 +28,9 @@ class GreenDefender:
 		self.saucer = Saucer(self)
 		self.lasers = pygame.sprite.Group()
 		self.asteroids = pygame.sprite.Group()
+		self.stars = pygame.sprite.Group()
+
+		self._create_moving_background()
 
 		self._create_group_asteroids()
 
@@ -51,7 +55,40 @@ class GreenDefender:
 				self.saucer.update()
 				self._update_lasers()
 				self._update_asteroids()
+				self._update_stars()
 			self._update_screen()
+
+	def _create_moving_background(self):
+		star = Star(self)
+		self._create_stars()
+
+	def _update_stars(self):
+		screen_rect = self.screen.get_rect()
+		for star in self.stars:
+			star.rect.x -= self.settings.background_speed
+			if star.rect.right <= screen_rect.left:
+				star.rect.left = screen_rect.right
+
+	def _create_stars(self):
+		"""Create bunch of stars."""
+        # Create a star and find the number of stars in one row.
+        # Spacing between each star is one star width.
+		star = Star(self)
+        
+		while len(self.stars) < 150:
+			random_rect_x = randint(1, self.settings.screen_width)
+			random_rect_y = randint(1, self.settings.screen_height)
+			self._create_star(random_rect_x, random_rect_y)
+
+	def _create_star(self, random_rect_x, random_rect_y):
+		"""Create a star and place it in the row."""
+		star = Star(self)
+		star_width, star_height = star.rect.size
+		star.x = random_rect_x
+		star.rect.x = star.x
+		star.y = random_rect_y
+		star.rect.y = star.y
+		self.stars.add(star)
 
 	def play_death_sound(self):
 		death_sound = pygame.mixer.Sound('sounds/death_sound.wav')
@@ -224,6 +261,7 @@ class GreenDefender:
 	def _update_screen(self):
 		# Fills screen with background color
 		self.screen.fill(self.settings.bg_color)
+		self.stars.draw(self.screen)
 		# Draw saucer.
 		self.saucer.blitme()
 		# Update lasers.
