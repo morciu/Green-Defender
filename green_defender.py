@@ -66,8 +66,8 @@ class GreenDefender:
 		screen_rect = self.screen.get_rect()
 		for star in self.stars:
 			star.rect.x -= self.settings.background_speed
-			if star.rect.right <= screen_rect.left:
-				star.rect.left = screen_rect.right
+			if star.rect.left <= screen_rect.left:
+				star.rect.right = screen_rect.right
 
 	def _create_stars(self):
 		"""Create bunch of stars."""

@@ -11,7 +11,7 @@ class Saucer(Sprite):
 		self.screen_rect = gf_game.screen.get_rect()
 
 		# Load flying saucer image.
-		self.image = pygame.image.load('images/saucer_new.png')
+		self.image = pygame.image.load('images/saucer.png')
 		self.rect = self.image.get_rect()
 
 		# Start each flying saucer at the left center side of the screen.
